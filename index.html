@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<title>JoGate</title>
+	<!-- MQTT.js library -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.0/mqtt.min.js"></script>
+
+	 <script>
+		window.extra = prompt("16 digit remote key or [Enter] for open access:");
+	</script>
+
+	<style>
+		body
+		{
+			background-color: black;
+			font-family: Arial, sans-serif;
+			text-align: center;
+			padding: 1px;
+		}
+
+		h2
+		{
+			font-weight: bold;
+			margin-bottom: 10px;
+			color: rgb(40, 50, 50);
+		}
+
+		button
+		{
+			vertical-align: middle;  /* aligns all elements to the middle line */
+  
+			-webkit-user-select: none; /* Disable text selection on Safari/iOS */
+			-webkit-touch-callout: none; /* Disable the callout (e.g. copy/paste menu) */
+			user-select: none; /* Standard property for other browsers */
+			-webkit-appearance: none;
+
+			font-size: 20px;
+			font-weight: bold;
+			padding: 20px 20px;
+			margin: 5px;
+			border-radius: 12px;
+			border: none;
+			cursor: pointer;
+			transition: transform 0.1s;
+			background-color: rgb(40, 50, 50);
+			color: black;
+			width: 40%;
+
+			height: 4.3em;
+		}
+
+		.led
+		{
+			vertical-align: middle;  /* aligns all elements to the middle line */
+  
+			display: inline-block;
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			margin-left: 10px;
+			background-color: rgb(44, 44, 44); /* default unknown state */
+		}
+
+	</style>
+
+	</head>
+	
+	<body>  
+	<h2>Gate</h2>
+
+	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/gate', 1, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/gate', 1, 'ON')">Open<br>ON</button>
+	<span id="led5" class="led"></span>
+	<br>
+	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/gate', 4, 'OFF')">OFF</button>
+	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/gate', 4, 'ON')">Halt<br>ON</button>
+	<span id="led6" class="led"></span>
+	<br>
+
+	<h2>Backyard</h2>
+
+	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/relay', 1, 'OFF')">OFF</button>
+	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/relay', 1, 'ON')">Workbench<br>ON</button>
+	<span id="led1" class="led"></span>
+	<br>
+	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/relay', 2, 'OFF')">OFF</button>
+	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/relay', 2, 'ON')">Kitchen<br>ON</button>
+	<span id="led2" class="led"></span>
+	<br>
+	<br>
+	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/relay', 3, 'OFF')">OFF</button>
+	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/relay', 3, 'ON')">Garden<br>ON</button>
+	<span id="led3" class="led"></span>
+	<br>
+	<br>
+	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/relay', 4, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/relay', 4, 'ON')">Container<br>ON</button>
+	<span id="led4" class="led"></span>
+
+	<script>
+
+		function xorString(source, code)
+		{
+			let output = '';
+			for (let i = 0; i < source.length; i++)
+			{
+				const codeChar = code[i % code.length];				
+				const xoredChar = String.fromCharCode(source.charCodeAt(i) ^ codeChar.charCodeAt(0));
+				output += xoredChar;
+			}
+			return output;
+		}
+
+		// MQTT connection parameters
+		const broker = "wss://55c00f4848864faa95b014d322858341.s1.eu.hivemq.cloud:8884/mqtt";
+		const clientId = "webRelayClient_" + Math.floor(Math.random() * 1000);
+		const username = "user1";
+
+		const password = String.fromCharCode(4) + String.fromCharCode(11) + String.fromCharCode(8) + String.fromCharCode(0) + String.fromCharCode(5) + String.fromCharCode(10) + String.fromCharCode(85) + String.fromCharCode(121);
+
+		const password2 = xorString(password, window.extra);
+
+		//console.log("Xor string: " + password2);
+		//for (let i = 0; i < password.length; i++)
+		//{
+		//	console.log(password2.charCodeAt(i));
+		//}
+		//return;
+
+		console.log(`✅ Broker ${broker}`);
+
+		let client;
+
+		function initMQTT() 
+		{
+			if(window.extra == "")
+			{
+				console.log(`✅ Open Access`);
+				return;
+			}
+
+			client = mqtt.connect(broker, 
+											{
+												clientId: clientId,
+												username: username,
+												password: password2,
+												clean: true,
+												connectTimeout: 4000,
+												reconnectPeriod: 1000,
+												rejectUnauthorized: false
+											});
+
+			client.on('connect', () => 
+			{
+				console.log("✅ Connected to HiveMQ Cloud!");
+
+				// Subscribe to relay status topic (Tasmota publishes to stat/<device>/POWERx)
+				// and ask Tasmota for the current state
+				client.subscribe(`stat/relay/POWER1`);
+				client.publish(`cmnd/relay/POWER1`, '');
+				client.subscribe(`stat/relay/POWER2`);
+				client.publish(`cmnd/relay/POWER2`, '');
+				client.subscribe(`stat/relay/POWER3`);
+				client.publish(`cmnd/relay/POWER3`, '');
+				client.subscribe(`stat/relay/POWER4`);
+				client.publish(`cmnd/relay/POWER4`, '');
+				client.subscribe(`stat/gate/POWER1`);
+				client.publish(`cmnd/gate/POWER1`, '');
+				client.subscribe(`stat/gate/POWER4`);
+				client.publish(`cmnd/gate/POWER4`, '');
+			});
+
+			client.on('message', (topic, message) =>
+			{
+				const payload = message.toString();
+				console.log(`📩 Topic=${topic} Payload=${payload}`);
+
+				led_number = 0;
+
+				if(topic == "stat/relay/POWER1")
+				{
+					led_number = 1;
+				}
+				else if(topic == "stat/relay/POWER2")
+				{
+					led_number = 2;
+				}
+				else if(topic == "stat/relay/POWER3")
+				{
+					led_number = 3;
+				}
+				else if(topic == "stat/relay/POWER4")
+				{
+					led_number = 4;
+				}
+				else if(topic == "stat/gate/POWER1")
+				{
+					led_number = 5;
+				}
+				else if(topic == "stat/gate/POWER4")
+				{
+					led_number = 6;
+				}
+
+				if(led_number > 0)
+				{
+					updateLED(led_number, payload);
+				}
+			});
+
+			client.on('error', (err) => 
+			{
+				console.error("❌ MQTT connection failed:", err);
+			});
+
+			client.on('close', () => 
+			{
+				console.log("⚠️ Connection closed");
+			});
+
+		}
+
+		function sendMQTT(baseTopic, relayNumber, state) 
+		{
+			if (!client || !client.connected) 
+			{
+				console.warn("⚠️ MQTT client not connected!");
+				return;
+			}
+
+			const topic = `${baseTopic}/Power${relayNumber}`;
+
+			console.log(`Publishing -> Topic: ${topic}, Payload: ${state}`);
+
+			client.publish(topic, state, {}, (err) => 
+			{
+				if (err) console.error("Publish error:", err);
+				else console.log(`✅ Relay ${relayNumber} ${state} command sent`);
+			});
+		}
+
+		function updateLED(led_number, state)
+		{
+			const led = document.getElementById("led" + led_number);
+			
+			console.log(`✅ Led ${led_number}`);
+
+			if(state == "ON")
+			{
+				led.style.backgroundColor = "rgb(0, 255, 0)";
+			}
+			else
+			{
+				led.style.backgroundColor = "rgb(0, 30, 0)";
+			}
+
+		}
+
+		window.onload = initMQTT;
+	</script>
+
+	<script>
+		document.querySelectorAll("button").forEach(btn => 
+		{
+			// For touch devices
+			btn.addEventListener("touchstart", () => btn.style.transform = "scale(0.8)");
+			btn.addEventListener("touchend", () => btn.style.transform = "scale(1)");
+			btn.addEventListener("touchcancel", () => btn.style.transform = "scale(1)");
+
+			// For mouse / desktop
+			btn.addEventListener("mousedown", () => btn.style.transform = "scale(0.8)");
+			btn.addEventListener("mouseup", () => btn.style.transform = "scale(1)");
+			btn.addEventListener("mouseleave", () => btn.style.transform = "scale(1)");
+		});
+	</script>
+
+	</body>
+</html>
