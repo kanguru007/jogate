@@ -101,6 +101,26 @@
 	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/relay', 4, 'ON')">Container<br>ON</button>
 	<span id="led4" class="led"></span>
 
+	<h2>Water</h2>
+
+	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/relay', 1, 'OFF')">OFF</button>
+	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/relay', 1, 'ON')">Workbench<br>ON</button>
+	<span id="led7" class="led"></span>
+	<br>
+	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/relay', 2, 'OFF')">OFF</button>
+	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/relay', 2, 'ON')">Kitchen<br>ON</button>
+	<span id="led8" class="led"></span>
+	<br>
+	<br>
+	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/relay', 3, 'OFF')">OFF</button>
+	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/relay', 3, 'ON')">Garden<br>ON</button>
+	<span id="led9" class="led"></span>
+	<br>
+	<br>
+	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/relay', 4, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/relay', 4, 'ON')">Container<br>ON</button>
+	<span id="led10" class="led"></span>
+
 	<script>
 
 		function xorString(source, code)
@@ -172,6 +192,14 @@
 				client.publish(`cmnd/gate/POWER1`, '');
 				client.subscribe(`stat/gate/POWER4`);
 				client.publish(`cmnd/gate/POWER4`, '');
+				client.subscribe(`stat/water/POWER1`);
+				client.publish(`cmnd/water/POWER1`, '');
+				client.subscribe(`stat/water/POWER2`);
+				client.publish(`cmnd/water/POWER2`, '');
+				client.subscribe(`stat/water/POWER3`);
+				client.publish(`cmnd/water/POWER3`, '');
+				client.subscribe(`stat/water/POWER4`);
+				client.publish(`cmnd/water/POWER4`, '');
 			});
 
 			client.on('message', (topic, message) =>
@@ -204,6 +232,22 @@
 				else if(topic == "stat/gate/POWER4")
 				{
 					led_number = 6;
+				}
+				if(topic == "stat/water/POWER1")
+				{
+					led_number = 7;
+				}
+				else if(topic == "stat/water/POWER2")
+				{
+					led_number = 8;
+				}
+				else if(topic == "stat/water/POWER3")
+				{
+					led_number = 9;
+				}
+				else if(topic == "stat/water/POWER4")
+				{
+					led_number = 10;
 				}
 
 				if(led_number > 0)
