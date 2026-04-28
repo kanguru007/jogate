@@ -83,20 +83,20 @@
 
 	<h2>Backyard</h2>
 
-	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/relay', 1, 'OFF')">OFF</button>
-	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/relay', 1, 'ON')">Workbench<br>ON</button>
+	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/backyard', 1, 'OFF')">OFF</button>
+	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/backyard', 1, 'ON')">Workbench<br>ON</button>
 	<span id="led1" class="led"></span>
 	<br>
-	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/relay', 2, 'OFF')">OFF</button>
-	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/relay', 2, 'ON')">Kitchen<br>ON</button>
+	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/backyard', 2, 'OFF')">OFF</button>
+	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/backyard', 2, 'ON')">Kitchen<br>ON</button>
 	<span id="led2" class="led"></span>
 	<br>
-	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/relay', 3, 'OFF')">OFF</button>
-	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/relay', 3, 'ON')">Garden<br>ON</button>
+	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/backyard', 3, 'OFF')">OFF</button>
+	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/backyard', 3, 'ON')">Garden<br>ON</button>
 	<span id="led3" class="led"></span>
 	<br>
-	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/relay', 4, 'OFF')">OFF</button>
-	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/relay', 4, 'ON')">Container<br>ON</button>
+	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/backyard', 4, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/backyard', 4, 'ON')">Container<br>ON</button>
 	<span id="led4" class="led"></span>
 
 	<h2>Water</h2>
@@ -176,14 +176,14 @@
 
 				// Subscribe to relay status topic (Tasmota publishes to stat/<device>/POWERx)
 				// and ask Tasmota for the current state
-				client.subscribe(`stat/relay/POWER1`);
-				client.publish(`cmnd/relay/POWER1`, '');
-				client.subscribe(`stat/relay/POWER2`);
-				client.publish(`cmnd/relay/POWER2`, '');
-				client.subscribe(`stat/relay/POWER3`);
-				client.publish(`cmnd/relay/POWER3`, '');
-				client.subscribe(`stat/relay/POWER4`);
-				client.publish(`cmnd/relay/POWER4`, '');
+				client.subscribe(`stat/backyard/POWER1`);
+				client.publish(`cmnd/backyard/POWER1`, '');
+				client.subscribe(`stat/backyard/POWER2`);
+				client.publish(`cmnd/backyard/POWER2`, '');
+				client.subscribe(`stat/backyard/POWER3`);
+				client.publish(`cmnd/backyard/POWER3`, '');
+				client.subscribe(`stat/backyard/POWER4`);
+				client.publish(`cmnd/backyard/POWER4`, '');
 				client.subscribe(`stat/gate/POWER1`);
 				client.publish(`cmnd/gate/POWER1`, '');
 				client.subscribe(`stat/gate/POWER4`);
@@ -205,19 +205,19 @@
 
 				led_number = 0;
 
-				if(topic == "stat/relay/POWER1")
+				if(topic == "stat/backyard/POWER1")
 				{
 					led_number = 1;
 				}
-				else if(topic == "stat/relay/POWER2")
+				else if(topic == "stat/backyard/POWER2")
 				{
 					led_number = 2;
 				}
-				else if(topic == "stat/relay/POWER3")
+				else if(topic == "stat/backyard/POWER3")
 				{
 					led_number = 3;
 				}
-				else if(topic == "stat/relay/POWER4")
+				else if(topic == "stat/backyard/POWER4")
 				{
 					led_number = 4;
 				}
