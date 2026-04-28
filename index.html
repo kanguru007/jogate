@@ -10,6 +10,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.0/mqtt.min.js"></script>
 
 	 <script>
+		var b = 2.0;
 		window.extra = prompt("16 digit remote key or [Enter] for open access:");
 	</script>
 
@@ -26,8 +27,8 @@
 		{
 			font-weight: bold;
 			margin-bottom: 10px;
-			//color: rgb(40, 50, 50);
-			color: rgb(70, 70, 65);
+			//color: rgb(40*b, 50*b, 50*b);
+			color: rgb(70*b, 70*b, 65*b);
 		}
 
 		button
@@ -47,9 +48,9 @@
 			border: none;
 			cursor: pointer;
 			transition: transform 0.1s;
-			background-color: rgb(40, 50, 50);
+			background-color: rgb(40*b, 50*b, 50*b);
 			//color: black;
-			color: rgb(70, 70, 65);
+			color: rgb(70*b, 70*b, 65*b);
 			width: 40%;
 
 			height: 3.6em;
@@ -64,7 +65,7 @@
 			height: 15px;
 			border-radius: 50%;
 			margin-left: 10px;
-			background-color: rgb(44, 44, 44); /* default unknown state */
+			background-color: rgb(44*b, 44*b, 44*b); /* default unknown state */
 		}
 
 	</style>
@@ -74,49 +75,49 @@
 	<body>  
 	<h2>Gate</h2>
 
-	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/gate', 1, 'OFF')">OFF</button>
-	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/gate', 1, 'ON')">Open<br>ON</button>
+	<button style="background-color: rgb(40*b, 25*b, 00*b)" onclick="sendMQTT('cmnd/gate', 1, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40*b, 25*b, 00*b)" onclick="sendMQTT('cmnd/gate', 1, 'ON')">Open<br>ON</button>
 	<span id="led5" class="led"></span>
 	<br>
-	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/gate', 4, 'OFF')">OFF</button>
-	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/gate', 4, 'ON')">Halt<br>ON</button>
+	<button style="background-color: rgb(20*b, 20*b, 20*b)" onclick="sendMQTT('cmnd/gate', 4, 'OFF')">OFF</button>
+	<button style="background-color: rgb(20*b, 20*b, 20*b)" onclick="sendMQTT('cmnd/gate', 4, 'ON')">Halt<br>ON</button>
 	<span id="led6" class="led"></span>
 	<br>
 
 	<h2>Backyard</h2>
 
-	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/backyard', 1, 'OFF')">OFF</button>
-	<button style="background-color: rgb(10, 25, 40)" onclick="sendMQTT('cmnd/backyard', 1, 'ON')">Workbench<br>ON</button>
+	<button style="background-color: rgb(10*b, 25*b, 40*b)" onclick="sendMQTT('cmnd/backyard', 1, 'OFF')">OFF</button>
+	<button style="background-color: rgb(10*b, 25*b, 40*b)" onclick="sendMQTT('cmnd/backyard', 1, 'ON')">Workbench<br>ON</button>
 	<span id="led1" class="led"></span>
 	<br>
-	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/backyard', 2, 'OFF')">OFF</button>
-	<button style="background-color: rgb(10, 40, 25)" onclick="sendMQTT('cmnd/backyard', 2, 'ON')">Kitchen<br>ON</button>
+	<button style="background-color: rgb(10*b, 40*b, 25*b)" onclick="sendMQTT('cmnd/backyard', 2, 'OFF')">OFF</button>
+	<button style="background-color: rgb(10*b, 40*b, 25*b)" onclick="sendMQTT('cmnd/backyard', 2, 'ON')">Kitchen<br>ON</button>
 	<span id="led2" class="led"></span>
 	<br>
-	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/backyard', 3, 'OFF')">OFF</button>
-	<button style="background-color: rgb(20, 20, 20)" onclick="sendMQTT('cmnd/backyard', 3, 'ON')">Garden<br>ON</button>
+	<button style="background-color: rgb(20*b, 20*b, 20*b)" onclick="sendMQTT('cmnd/backyard', 3, 'OFF')">OFF</button>
+	<button style="background-color: rgb(20*b, 20*b, 20*b)" onclick="sendMQTT('cmnd/backyard', 3, 'ON')">Garden<br>ON</button>
 	<span id="led3" class="led"></span>
 	<br>
-	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/backyard', 4, 'OFF')">OFF</button>
-	<button style="background-color: rgb(40, 40, 00)" onclick="sendMQTT('cmnd/backyard', 4, 'ON')">Container<br>ON</button>
+	<button style="background-color: rgb(40*b, 40*b, 00*b)" onclick="sendMQTT('cmnd/backyard', 4, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40*b, 40*b, 00*b)" onclick="sendMQTT('cmnd/backyard', 4, 'ON')">Container<br>ON</button>
 	<span id="led4" class="led"></span>
 
 	<h2>Water</h2>
 
-	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/water', 1, 'OFF')">OFF</button>
-	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/water', 1, 'ON')">Plug 1<br>ON</button>
+	<button style="background-color: rgb(40*b, 25*b, 00*b)" onclick="sendMQTT('cmnd/water', 1, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40*b, 25*b, 00*b)" onclick="sendMQTT('cmnd/water', 1, 'ON')">Plug 1<br>ON</button>
 	<span id="led7" class="led"></span>
 	<br>
-	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/water', 2, 'OFF')">OFF</button>
-	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/water', 2, 'ON')">Plug 2<br>ON</button>
+	<button style="background-color: rgb(40*b, 25*b, 00*b)" onclick="sendMQTT('cmnd/water', 2, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40*b, 25*b, 00*b)" onclick="sendMQTT('cmnd/water', 2, 'ON')">Plug 2<br>ON</button>
 	<span id="led8" class="led"></span>
 	<br>
-	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/water', 3, 'OFF')">OFF</button>
-	<button style="background-color: rgb(40, 25, 00)" onclick="sendMQTT('cmnd/water', 3, 'ON')">Plug 3<br>ON</button>
+	<button style="background-color: rgb(40*b, 25*b, 00*b)" onclick="sendMQTT('cmnd/water', 3, 'OFF')">OFF</button>
+	<button style="background-color: rgb(40*b, 25*b, 00*b)" onclick="sendMQTT('cmnd/water', 3, 'ON')">Plug 3<br>ON</button>
 	<span id="led9" class="led"></span>
 	<br>
-	<button style="background-color: rgb(0, 50, 80)" onclick="sendMQTT('cmnd/water', 4, 'OFF')">OFF</button>
-	<button style="background-color: rgb(0, 50, 80)" onclick="sendMQTT('cmnd/water', 4, 'ON')">Water<br>ON</button>
+	<button style="background-color: rgb(0*b, 50*b, 80*b)" onclick="sendMQTT('cmnd/water', 4, 'OFF')">OFF</button>
+	<button style="background-color: rgb(0*b, 50*b, 80*b)" onclick="sendMQTT('cmnd/water', 4, 'ON')">Water<br>ON</button>
 	<span id="led10" class="led"></span>
 
 	<script>
@@ -293,11 +294,11 @@
 
 			if(state == "ON")
 			{
-				led.style.backgroundColor = "rgb(0, 128, 0)";
+				led.style.backgroundColor = "rgb(0*b, 128*b, 0*b)";
 			}
 			else
 			{
-				led.style.backgroundColor = "rgb(0, 30, 0)";
+				led.style.backgroundColor = "rgb(0*b, 30*b, 0*b)";
 			}
 
 		}
