@@ -13,7 +13,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.0/mqtt.min.js"></script>
 
 	<script>
-		window.extra = prompt("PasswordD:");
+		window.extra = prompt("Password:");
 	</script>
 
 	<style>
@@ -128,7 +128,14 @@
 			let output = '';
 			for (let i = 0; i < source.length; i++)
 			{
-				const codeChar = code[i % code.length];				
+				if(i < code.length)
+				{
+					const codeChar = code[i % code.length];
+				}
+				else
+				{
+					const codeChar = 0;
+				}
 				const xoredChar = String.fromCharCode(source.charCodeAt(i) ^ codeChar.charCodeAt(0));
 				output += xoredChar;
 			}
