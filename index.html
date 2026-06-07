@@ -13,7 +13,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.0/mqtt.min.js"></script>
 
 	<script>
-		window.extra = prompt("PasswordC:");
+		window.extra = prompt("PasswordD:");
 	</script>
 
 	<style>
@@ -140,7 +140,8 @@
 		const clientId = "webRelayClient_" + Math.floor(Math.random() * 1000);
 		const username = "user1";
 
-		const password = String.fromCharCode(4) + String.fromCharCode(11) + String.fromCharCode(8) + String.fromCharCode(0) + String.fromCharCode(5) + String.fromCharCode(10) + String.fromCharCode(85) + String.fromCharCode(121);
+		//const password = String.fromCharCode(4) + String.fromCharCode(11) + String.fromCharCode(8) + String.fromCharCode(0) + String.fromCharCode(5) + String.fromCharCode(10) + String.fromCharCode(85) + String.fromCharCode(121);
+		const password = String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + String.fromCharCode(0) + "12aA";
 
 		const password2 = xorString(password, window.extra);
 
